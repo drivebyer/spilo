@@ -57,6 +57,7 @@ curl -sL "https://github.com/zalando-pg/pg_auth_mon/archive/$PG_AUTH_MON_COMMIT.
 curl -sL "https://github.com/cybertec-postgresql/pg_permissions/archive/$PG_PERMISSIONS_COMMIT.tar.gz" | tar xz
 curl -sL "https://github.com/hughcapet/pg_tm_aux/archive/$PG_TM_AUX_COMMIT.tar.gz" | tar xz
 curl -sL "https://github.com/zubkov-andrei/pg_profile/archive/$PG_PROFILE.tar.gz" | tar xz
+curl -sL "https://github.com/pgvector/pgvector/archive/v$PGVECTOR.tar.gz" | tar xz
 git clone -b "$SET_USER" https://github.com/pgaudit/set_user.git
 git clone https://github.com/timescale/timescaledb.git
 
@@ -166,6 +167,9 @@ for version in $DEB_PG_SUPPORTED_VERSIONS; do
         EXTRA_EXTENSIONS=("plantuner-${PLANTUNER_COMMIT}" plprofiler)
         if [ "${version%.*}" -ge 10 ]; then
             EXTRA_EXTENSIONS+=("pg_mon-${PG_MON_COMMIT}")
+        fi
+        if [ "${version%.*}" -ge 15 ]; then
+            EXTRA_EXTENSIONS+=("pgvector-${PGVECTOR}")
         fi
     else
         EXTRA_EXTENSIONS=()
